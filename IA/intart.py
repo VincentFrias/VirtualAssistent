@@ -52,30 +52,3 @@ def ia(ordem):
 
   response = chat_session.send_message("responda apenas em portugês brasil, sem emojis e sem caracteres especiais, de forma objetiva e FINJA SER A FRIDAY DO TONY STARK..."+ ordem)
   return response.text
-
-while True:
-  ordem= str(input("->"))
-  ordem= str.lower(ordem)
-  
-  if any(verifica_palavra_meio(ordem, palavra) for palavra in fim):
-    break
-
-  elif any(palavra in ordem.split() for palavra in abrir):
-    palavras = ordem.split()
-    for i, palavra in enumerate(palavras):
-        if palavra in abrir and i + 1 < len(palavras):
-            programa = palavras[i + 1] + ".exe"
-            caminho_programa = verifica_exe(programa)
-            if caminho_programa:
-                create_window(f"abrindo {palavras[i + 1]}")
-                abrir_exe(caminho_programa)
-            else:
-                create_window(f"abrindo {palavras[i + 1]}")
-                webbrowser.open(f"https://www.{palavras[i + 1]}.com")
-
-  elif any(verifica_palavra_meio(ordem, palavra) for palavra in time):
-    create_window(f"Agora são {infhora} do dia {infdata}")
-
-  else:
-    friday= ia(ordem)
-    create_window(friday)
