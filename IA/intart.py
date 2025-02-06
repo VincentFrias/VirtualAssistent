@@ -4,7 +4,8 @@ import google.generativeai as genai
 from voz import create_window
 import subprocess
 import webbrowser
-from process import verifica_exe, verifica_palavra_meio, abrir_exe, fim, abrir
+from process import verifica_exe, verifica_palavra_meio, abrir_exe, fim, abrir, infdata, infhora, time
+
 
 def ia(ordem):
   # Chave da API fornecida
@@ -35,7 +36,7 @@ def ia(ordem):
     "temperature": 1,
     "top_p": 0.95,
     "top_k": 40,
-    "max_output_tokens": 512,
+    "max_output_tokens": 256,
     "response_mime_type": "text/plain",
   }
 
@@ -55,8 +56,10 @@ def ia(ordem):
 while True:
   ordem= str(input("->"))
   ordem= str.lower(ordem)
-  if verifica_palavra_meio(ordem, fim):
+  
+  if any(verifica_palavra_meio(ordem, palavra) for palavra in fim):
     break
+
   elif any(palavra in ordem.split() for palavra in abrir):
     palavras = ordem.split()
     for i, palavra in enumerate(palavras):
@@ -69,6 +72,10 @@ while True:
             else:
                 create_window(f"abrindo {palavras[i + 1]}")
                 webbrowser.open(f"https://www.{palavras[i + 1]}.com")
+
+  elif any(verifica_palavra_meio(ordem, palavra) for palavra in time):
+    create_window(f"Agora são {infhora} do dia {infdata}")
+
   else:
     friday= ia(ordem)
     create_window(friday)
